@@ -32,19 +32,23 @@ try {
 }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', (req, res) => {
   // create a new category
-  try {
-    const productData = await Category.create({
-      category_name: req.body.category_name,
+  Category.create({
+      id: req.body.id,
+      category_name: req.body.category_name
+    })
+    .then((newCategory)=> {
+      res.json(newCategory);
+    })
+    .catch((err) => {
+      res.json(err);
     });
-    res.status(200).json(productData);
-  }catch(err) {
-    res.status(400).json(err);
-  }
-});
+  });
+ 
 
-router.put('/:id', async (req, res) => {
+
+router.put('/:id', (req, res) => {
   // update a category by its `id` value
   Category.update(
     {
